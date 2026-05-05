@@ -1,5 +1,9 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import MainScreen from "./views/screens/MainScreen.vue";
+</script>
 
 <template>
-    <div>App</div>
+    <main>
+        <MainScreen />
+    </main>
 </template>
