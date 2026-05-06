@@ -1,77 +1,42 @@
 <script setup lang="ts">
-import { ref, computed } from "vue";
-import {
-    Popover,
-    PopoverContent,
-    PopoverTrigger,
-} from "@/components/shadcn/popover";
-import { Button } from "@/components/shadcn/button";
+import { Time } from "@/models/time";
+import { computed } from "vue";
+import Input from "../shadcn/input/Input.vue";
 
-const hours = Array.from({ length: 24 }, (_, i) => i);
-const minutes = Array.from({ length: 60 }, (_, i) => i);
+const props = defineProps<{
+    modelValue: Time;
+}>();
 
-const selectedHour = ref<number | null>(null);
-const selectedMinute = ref<number | null>(null);
+const emit = defineEmits<{
+    (e: "update:modelValue", value: Time): void;
+}>();
 
-const modelValue = computed(() => {
-    if (selectedHour.value === null || selectedMinute.value === null) return "";
-    return `${String(selectedHour.value).padStart(2, "0")}:${String(
-        selectedMinute.value,
-    ).padStart(2, "0")}`;
+const time = computed({
+    get: () => props.modelValue,
+    set: (value: Time) => {
+        emit("update:modelValue", value);
+    },
 });
-
-function setHour(h: number) {
-    selectedHour.value = h;
-}
-function setMinute(m: number) {
-    selectedMinute.value = m;
-}
 </script>
 
 <template>
-    <Popover>
-        <PopoverTrigger as-child>
-            <Button variant="outline" class="w-[120px] justify-start">
-                {{ modelValue || "Pick time" }}
-            </Button>
-        </PopoverTrigger>
-
-        <PopoverContent class="w-[220px] p-3">
-            <div class="flex gap-2">
-                <div
-                    class="flex flex-col h-40 overflow-y-auto border rounded w-1/2"
-                >
-                    <button
-                        v-for="h in hours"
-                        :key="h"
-                        @click="setHour(h)"
-                        class="px-2 py-1 text-sm hover:bg-accent"
-                        :class="{ 'bg-accent': selectedHour === h }"
-                    >
-                        {{ String(h).padStart(2, "0") }}
-                    </button>
-                </div>
-
-                <div
-                    class="flex flex-col h-40 overflow-y-auto border rounded w-1/2"
-                >
-                    <button
-                        v-for="m in minutes"
-                        :key="m"
-                        @click="setMinute(m)"
-                        class="px-2 py-1 text-sm hover:bg-accent"
-                        :class="{ 'bg-accent': selectedMinute === m }"
-                    >
-                        {{ String(m).padStart(2, "0") }}
-                    </button>
-                </div>
-            </div>
-        </PopoverContent>
-    </Popover>
+    <div class="flex flex-row gap-1">
+        <!-- TODO validate input -->
+        <Input
+            class="w-20"
+            type="number"
+            placeholder="HH"
+            v-model.number="time.hour"
+            min="0"
+            max="23"
+        />
+        <Input
+            class="w-20"
+            type="number"
+            placeholder="MM"
+            v-model.number="time.minute"
+            min="0"
+            max="59"
+        />
+    </div>
 </template>
-
-<style scoped>
-button {
-    text-align: left;
-}
-</style>
