@@ -13,7 +13,8 @@ async function scheduleShutdown() {
     await invoke("schedule_shutdown", {
         seconds: time.value.getSecondsUntilNext(),
     });
-    scheduleTime.value = time.value;
+
+    scheduleTime.value = new Time(time.value.hour, time.value.minute);
 }
 
 async function cancelShutdown() {
@@ -23,6 +24,7 @@ async function cancelShutdown() {
 </script>
 
 <template>
+    <!-- TODO finish UI -->
     <div class="flex text-center flex-col items-center h-full w-full gap-5 p-3">
         <div class="text-4xl">ZZZ Time</div>
         <div>

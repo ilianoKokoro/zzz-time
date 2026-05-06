@@ -21,7 +21,7 @@ const time = computed({
 
 <template>
     <div class="flex flex-row gap-1">
-        <!-- TODO validate input -->
+        <!-- TODO validate input and revamp-->
         <Input
             class="w-20"
             type="number"

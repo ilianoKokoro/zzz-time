@@ -6,7 +6,8 @@ pub fn run() {
         .plugin(tauri_plugin_opener::init())
         .invoke_handler(tauri::generate_handler![
             commands::schedule_shutdown,
-            commands::cancel_shutdown
+            commands::cancel_shutdown,
+            commands::show_window
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

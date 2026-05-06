@@ -2,6 +2,8 @@
 import { ref, onMounted, onBeforeUnmount, computed } from "vue";
 import { Time } from "@/models/time";
 
+// TODO clean up
+
 const props = defineProps({
     time: {
         type: Time,

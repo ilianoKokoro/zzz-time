@@ -2,10 +2,14 @@ export class Time {
     hour: number;
     minute: number;
 
-    constructor() {
-        const today = new Date();
-        this.hour = today.getHours();
-        this.minute = today.getMinutes();
+    constructor(hour?: number, minute?: number) {
+        if (hour !== undefined && minute !== undefined) {
+            this.hour = hour;
+            this.minute = minute;
+        } else {
+            this.hour = 0;
+            this.minute = 0;
+        }
     }
 
     public getSecondsUntilNext(): number {
