@@ -1,6 +1,6 @@
 {
     "$schema": "https://schema.tauri.app/config/2",
-    "productName": "zzz-time",
+    "productName": "ZZZ Time",
     "identifier": "ca.ilianokokoro.zzz-time",
     "build": {
         "beforeDevCommand": "npm run dev",
