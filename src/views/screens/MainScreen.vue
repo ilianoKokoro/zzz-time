@@ -25,8 +25,7 @@ async function cancelShutdown() {
 
 <template>
     <!-- TODO finish UI -->
-    <div class="flex text-center flex-col items-center h-full w-full gap-5 p-3">
-        <div class="text-4xl">ZZZ Time</div>
+    <div class="flex text-center flex-col items-center h-full w-full gap-8 p-3">
         <div>
             What time do you wanna
             <br />

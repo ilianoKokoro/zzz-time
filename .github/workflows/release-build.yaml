@@ -1,0 +1,60 @@
+name: Tauri production build
+
+permissions:
+    contents: read
+
+on:
+    push:
+        branches:
+            - main
+            - prod
+        paths-ignore:
+            - "README.md"
+            - "LICENSE"
+            - ".gitignore"
+            - "fastlane/**"
+
+    workflow_dispatch:
+
+concurrency:
+    group: ${{ github.workflow }}-${{ github.ref }}
+    cancel-in-progress: true
+
+env:
+    NODE_VERSION: lts/current
+
+jobs:
+    build:
+        runs-on: windows-latest
+
+        steps:
+            - uses: actions/checkout@v6
+
+            - name: Install Node
+              uses: actions/setup-node@v4
+              with:
+                  node-version: ${{env.NODE_VERSION}}
+                  cache: "npm"
+                  cache-dependency-path: package-lock.json
+
+            - name: Install NPM dependencies
+              run: npm ci
+
+            - name: Build the Tauri app
+              run: npm run tauri build
+
+            - name: Upload Installer
+              uses: actions/upload-artifact@v7
+              with:
+                  path: src-tauri/target/release/bundle/msi/*.msi
+                  overwrite: true
+                  archive: false
+                  if-no-files-found: error
+
+            - name: Upload EXE
+              uses: actions/upload-artifact@v7
+              with:
+                  path: src-tauri/target/release/*.exe
+                  overwrite: true
+                  archive: false
+                  if-no-files-found: error

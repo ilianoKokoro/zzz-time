@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { Time } from "@/models/time";
 import { computed } from "vue";
-import Input from "../shadcn/input/Input.vue";
+
+import Input from "@/components/shadcn/input/Input.vue";
+import { Time } from "@/models/time";
 
 const props = defineProps<{
     modelValue: Time;
@@ -11,32 +12,32 @@ const emit = defineEmits<{
     (e: "update:modelValue", value: Time): void;
 }>();
 
-const time = computed({
-    get: () => props.modelValue,
-    set: (value: Time) => {
-        emit("update:modelValue", value);
+const timeString = computed({
+    get: () => {
+        return [
+            props.modelValue.hour.toString().padStart(2, "0"),
+            props.modelValue.minute.toString().padStart(2, "0"),
+        ].join(":");
+    },
+
+    set: (value: string) => {
+        const [hour, minute] = value.split(":").map((v) => Number(v));
+
+        const newTime = new Time();
+
+        newTime.hour = Number.isNaN(hour) ? 0 : hour;
+        newTime.minute = Number.isNaN(minute) ? 0 : minute;
+
+        emit("update:modelValue", newTime);
     },
 });
 </script>
 
 <template>
-    <div class="flex flex-row gap-1">
-        <!-- TODO validate input and revamp-->
-        <Input
-            class="w-20"
-            type="number"
-            placeholder="HH"
-            v-model.number="time.hour"
-            min="0"
-            max="23"
-        />
-        <Input
-            class="w-20"
-            type="number"
-            placeholder="MM"
-            v-model.number="time.minute"
-            min="0"
-            max="59"
-        />
-    </div>
+    <Input
+        type="time"
+        step="60"
+        v-model="timeString"
+        class="h-20 text-6xl font-semibold w-auto appearance-none bg-background [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-calendar-picker-indicator]:appearance-none"
+    />
 </template>
