@@ -97,7 +97,7 @@ jobs:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
               with:
                   tag: v${{ steps.get_version.outputs.version }}
-                  name: ZZZ Time v${{ steps.get_version.outputs.version }}
+                  name: v${{ steps.get_version.outputs.version }}
                   artifacts: ./artifacts/**/*.msi,./artifacts/**/*.exe
                   generateReleaseNotes: true
                   draft: true

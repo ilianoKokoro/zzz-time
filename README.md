@@ -28,7 +28,9 @@ Designed to be simple and fast, ZZZ Time lets you schedule automatic PC shutdown
   <img src="https://raw.githubusercontent.com/ilianoKokoro/zzz-time/refs/heads/main/screenshots/main.png" height="500" />
 </p>
 
-<!-- ## Beta builds 🪲
+<!--
+TODO
+## Beta builds 🪲
 
 **⚠️ Development builds may contain bugs or unfinished features ⚠️**
 
