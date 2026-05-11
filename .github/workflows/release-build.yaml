@@ -47,7 +47,7 @@ jobs:
               uses: actions/upload-artifact@v7
               with:
                   name: zzz-time-installer
-                  path: src-tauri/target/release/bundle/nsis/zzz-time.yaml
+                  path: src-tauri/target/release/bundle/nsis/zzz-time.exe
                   overwrite: true
                   archive: false
                   if-no-files-found: error

@@ -28,13 +28,13 @@ Designed to be simple and fast, ZZZ Time lets you schedule automatic PC shutdown
   <img src="https://raw.githubusercontent.com/ilianoKokoro/zzz-time/refs/heads/main/screenshots/main.png" height="500" />
 </p>
 
-## Beta builds 🪲
+<!-- ## Beta builds 🪲
 
 **⚠️ Development builds may contain bugs or unfinished features ⚠️**
 
 [![Beta Build](https://img.shields.io/github/actions/workflow/status/ilianoKokoro/zzz-time/release-build.yaml?style=for-the-badge&label=Beta%20Build)](https://github.com/ilianoKokoro/zzz-time/actions/workflows/release-build.yaml)
 
-<a href="https://nightly.link/ilianoKokoro/zzz-time/workflows/release-build.yaml/main/zzz-time.exe"><img src="https://i.postimg.cc/sxWv2J29/badge-github.png" height="80"></a>
+<a href="https://nightly.link/ilianoKokoro/zzz-time/workflows/release-build.yaml/main/zzz-time.exe"><img src="https://i.postimg.cc/sxWv2J29/badge-github.png" height="80"></a> -->
 
 ## Star History ✨
 
