@@ -32,16 +32,16 @@ Designed to be simple and fast, ZZZ Time lets you schedule automatic PC shutdown
 
 **⚠️ Development builds may contain bugs or unfinished features ⚠️**
 
-[![Beta Build](https://img.shields.io/github/actions/workflow/status/ilianoKokoro/zzz-time/build.yml?style=for-the-badge&label=Beta%20Build)](https://github.com/ilianoKokoro/zzz-time/actions/workflows/build.yml)
+[![Beta Build](https://img.shields.io/github/actions/workflow/status/ilianoKokoro/zzz-time/release-build.yaml?style=for-the-badge&label=Beta%20Build)](https://github.com/ilianoKokoro/zzz-time/actions/workflows/release-build.yaml)
 
-<a href="https://nightly.link/ilianoKokoro/zzz-time/workflows/build.yml/main/release-build.zip"><img src="https://i.postimg.cc/sxWv2J29/badge-github.png" height="80"></a>
+<a href="https://nightly.link/ilianoKokoro/zzz-time/workflows/release-build.yaml/main/zzz-time.exe"><img src="https://i.postimg.cc/sxWv2J29/badge-github.png" height="80"></a>
 
 ## Star History ✨
 
-<a href="https://www.star-history.com/#ilianoKokoro/zzz-time&Date">
+<a href="https://www.star-history.com/?type=date&repos=ilianoKokoro%2Fzzz-time">
  <picture>
-   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=ilianoKokoro/zzz-time&type=Date&theme=dark" />
-   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=ilianoKokoro/zzz-time&type=Date" />
-   <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=ilianoKokoro/zzz-time&type=Date" />
+   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/chart?repos=ilianoKokoro/zzz-time&type=date&theme=dark&legend=top-left" />
+   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/chart?repos=ilianoKokoro/zzz-time&type=date&legend=top-left" />
+   <img alt="Star History Chart" src="https://api.star-history.com/chart?repos=ilianoKokoro/zzz-time&type=date&legend=top-left" />
  </picture>
 </a>

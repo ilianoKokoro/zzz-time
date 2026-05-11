@@ -12,7 +12,7 @@ on:
             - "README.md"
             - "LICENSE"
             - ".gitignore"
-            - "fastlane/**"
+            - "screenshots/**"
 
     workflow_dispatch:
 
@@ -38,15 +38,20 @@ jobs:
                   cache-dependency-path: package-lock.json
 
             - name: Install NPM dependencies
-              run: npm ci
+              run: npm i
 
             - name: Build the Tauri app
               run: npm run tauri build
 
+            - name: Rename NSIS installer
+              shell: bash
+              run: |
+                  mv src-tauri/target/release/bundle/nsis/*.yml src-tauri/target/release/bundle/nsis/zzz-time.yaml
+
             - name: Upload Installer
               uses: actions/upload-artifact@v7
               with:
-                  path: src-tauri/target/release/bundle/msi/*.msi
+                  path: src-tauri/target/release/bundle/nsis/zzz-time.yaml
                   overwrite: true
                   archive: false
                   if-no-files-found: error
@@ -54,7 +59,45 @@ jobs:
             - name: Upload EXE
               uses: actions/upload-artifact@v7
               with:
-                  path: src-tauri/target/release/*.exe
+                  path: src-tauri/target/release/zzz-time.exe
                   overwrite: true
                   archive: false
                   if-no-files-found: error
+    publish-github-release:
+        permissions:
+            packages: write
+            contents: write
+        if: github.ref_name == 'prod'
+        needs:
+            - build
+        runs-on: ubuntu-latest
+        name: Publish the GitHub release
+        steps:
+            - uses: actions/checkout@v6
+
+            - name: Download artifacts
+              uses: actions/download-artifact@v8
+              with:
+                  path: ./artifacts
+                  merge-multiple: true
+
+            - name: Extract version
+              id: get_version
+              shell: bash
+              run: |
+                  version=$(node -p "require('./package.json').version")
+
+                  echo "version=$version"
+                  echo "version=$version" >> "$GITHUB_OUTPUT"
+
+            - name: Create GitHub Release
+              uses: ncipollo/release-action@v1
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+              with:
+                  tag: v${{ steps.get_version.outputs.version }}
+                  name: ZZZ Time v${{ steps.get_version.outputs.version }}
+                  artifacts: ./artifacts/**/*.msi,./artifacts/**/*.exe
+                  generateReleaseNotes: true
+                  draft: true
+                  allowUpdates: true
