@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from "vue";
+import { ref, watch } from "vue";
 
 import Input from "@/components/shadcn/input/Input.vue";
 import { Time } from "@/models/time";
@@ -12,32 +12,52 @@ const emit = defineEmits<{
     (e: "update:modelValue", value: Time): void;
 }>();
 
-const timeString = computed({
-    get: () => {
-        return [
-            props.modelValue.hour.toString().padStart(2, "0"),
-            props.modelValue.minute.toString().padStart(2, "0"),
-        ].join(":");
+const timeString = ref("");
+
+function formatTime(time: Time): string {
+    return [
+        time.hour.toString().padStart(2, "0"),
+        time.minute.toString().padStart(2, "0"),
+    ].join(":");
+}
+
+watch(
+    () => props.modelValue,
+    (value) => {
+        timeString.value = formatTime(value);
     },
+    { immediate: true, deep: true },
+);
 
-    set: (value: string) => {
-        const [hour, minute] = value.split(":").map((v) => Number(v));
+function updateTime(payload: string | number) {
+    const value = String(payload);
 
-        const newTime = new Time();
+    timeString.value = value;
 
-        newTime.hour = Number.isNaN(hour) ? 0 : hour;
-        newTime.minute = Number.isNaN(minute) ? 0 : minute;
+    if (!/^\d{2}:\d{2}$/.test(value)) {
+        return;
+    }
 
-        emit("update:modelValue", newTime);
-    },
-});
+    const [hour, minute] = value.split(":").map(Number);
+
+    if (hour < 0 || hour > 23 || minute < 0 || minute > 59) {
+        return;
+    }
+
+    const newTime = new Time();
+    newTime.hour = hour;
+    newTime.minute = minute;
+
+    emit("update:modelValue", newTime);
+}
 </script>
 
 <template>
     <Input
         type="time"
         step="60"
-        v-model="timeString"
+        :model-value="timeString"
+        @update:model-value="updateTime"
         class="h-20 text-6xl font-semibold w-auto appearance-none bg-background [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-calendar-picker-indicator]:appearance-none"
     />
 </template>

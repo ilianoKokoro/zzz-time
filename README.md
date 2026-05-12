@@ -38,6 +38,10 @@ TODO
 
 <a href="https://nightly.link/ilianoKokoro/zzz-time/workflows/release-build.yaml/main/zzz-time.exe"><img src="https://i.postimg.cc/sxWv2J29/badge-github.png" height="80"></a> -->
 
+## Credits 🎨
+
+**App logo**: Made by [Apelleru](https://www.twitch.tv/apelleru)
+
 ## Star History ✨
 
 <a href="https://www.star-history.com/?type=date&repos=ilianoKokoro%2Fzzz-time">
