@@ -21,6 +21,7 @@ concurrency:
     cancel-in-progress: true
 
 env:
+    BETA_TAG: beta
     NODE_VERSION: lts/*
 
 jobs:
@@ -64,6 +65,45 @@ jobs:
                   overwrite: true
                   archive: false
                   if-no-files-found: error
+
+    update-beta-prerelease:
+        permissions:
+            packages: write
+            contents: write
+        runs-on: windows-latest
+
+        if: github.ref_name != 'prod'
+        needs:
+            - build
+        name: Update the beta GitHub release
+        steps:
+            - uses: actions/checkout@v6
+
+            - name: Download artifacts
+              uses: actions/download-artifact@v8
+              with:
+                  path: ./artifacts
+
+            - name: Delete Old Beta Release
+              run: gh release delete ${{ env.BETA_TAG }} --cleanup-tag -y || true
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+            - name: Create new Beta release
+              uses: ncipollo/release-action@v1
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+              with:
+                  tag: ${{ env.BETA_TAG }}
+                  name: Beta
+                  artifacts: ./artifacts/**/*.exe
+                  allowUpdates: true
+                  removeArtifacts: true
+                  generateReleaseNotes: false
+                  makeLatest: false
+                  prerelease: true
+                  commit: ${{ github.sha }}
+
     publish-github-release:
         permissions:
             packages: write
