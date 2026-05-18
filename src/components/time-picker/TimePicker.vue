@@ -5,6 +5,8 @@ import { onBeforeUnmount, ref, watch } from "vue";
 import Button from "@/components/shadcn/button/Button.vue";
 import Input from "@/components/shadcn/input/Input.vue";
 import { Time } from "@/models/time";
+import { formatTime } from "@/core/helper";
+import constants from "@/core/constants";
 
 const props = defineProps<{
     modelValue: Time;
@@ -16,16 +18,6 @@ const emit = defineEmits<{
 
 const timeString = ref("");
 
-let holdTimeout: ReturnType<typeof setTimeout> | undefined;
-let holdInterval: ReturnType<typeof setInterval> | undefined;
-
-function formatTime(time: Time): string {
-    return [
-        time.hour.toString().padStart(2, "0"),
-        time.minute.toString().padStart(2, "0"),
-    ].join(":");
-}
-
 function emitTime(hour: number, minute: number) {
     const newTime = new Time();
 
@@ -34,6 +26,11 @@ function emitTime(hour: number, minute: number) {
 
     emit("update:modelValue", newTime);
 }
+
+//#region Holding logic
+
+let holdTimeout: ReturnType<typeof setTimeout> | undefined;
+let holdInterval: ReturnType<typeof setInterval> | undefined;
 
 function stopHolding() {
     clearTimeout(holdTimeout);
@@ -49,9 +46,12 @@ function startHolding(callback: () => void) {
     callback();
 
     holdTimeout = setTimeout(() => {
-        holdInterval = setInterval(callback, 80);
-    }, 350);
+        holdInterval = setInterval(callback, constants.BUTTON_HOLD_INTERVAL);
+    }, constants.BUTTON_HOLD_DELAY);
 }
+
+onBeforeUnmount(stopHolding);
+//#endregion
 
 watch(
     () => props.modelValue,
@@ -60,8 +60,6 @@ watch(
     },
     { immediate: true, deep: true },
 );
-
-onBeforeUnmount(stopHolding);
 
 function updateTime(payload: string | number) {
     const value = String(payload);
