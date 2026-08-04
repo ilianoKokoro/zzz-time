@@ -29,14 +29,14 @@ async function cancelShutdown() {
         <div>
             What time do you wanna
             <br />
-            <span class="text-2xl"> KILL PC ?</span>
+            <span class="text-2xl"> KILL YOUR PC ?</span>
         </div>
 
         <TimePicker v-model="time" />
         <div class="flex flex-row gap-1">
-            <Button size="lg" @click="scheduleShutdown">KILL</Button>
+            <Button size="xl" @click="scheduleShutdown">KILL</Button>
             <Button
-                size="lg"
+                size="xl"
                 :disabled="scheduleTime == undefined"
                 variant="secondary"
                 @click="cancelShutdown"
