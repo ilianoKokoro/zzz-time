@@ -1,20 +1,24 @@
 import constants from "@/core/constants";
 import type { StoredSchedule } from "@/models/storedSchedule";
+import { load } from "@tauri-apps/plugin-store";
 
-export function saveSchedule(hour: number, minute: number, timestamp: number) {
-    localStorage.setItem(
-        constants.SCHEDULE_KEY,
-        JSON.stringify({ hour, minute, timestamp }),
-    );
+const store = load(constants.STORE_FILE, { autoSave: true });
+
+export async function saveSchedule(
+    hour: number,
+    minute: number,
+    timestamp: number,
+) {
+    const s = await store;
+    await s.set(constants.SCHEDULE_KEY, { hour, minute, timestamp });
 }
 
-export function loadSchedule(): StoredSchedule | undefined {
+export async function loadSchedule(): Promise<StoredSchedule | undefined> {
     try {
-        const raw = localStorage.getItem(constants.SCHEDULE_KEY);
-        if (!raw) return undefined;
-
-        const parsed = JSON.parse(raw) as Partial<StoredSchedule>;
+        const s = await store;
+        const parsed = await s.get<StoredSchedule>(constants.SCHEDULE_KEY);
         if (
+            !parsed ||
             typeof parsed.hour !== "number" ||
             typeof parsed.minute !== "number" ||
             typeof parsed.timestamp !== "number"
@@ -22,12 +26,13 @@ export function loadSchedule(): StoredSchedule | undefined {
             return undefined;
         }
 
-        return parsed as StoredSchedule;
+        return parsed;
     } catch {
         return undefined;
     }
 }
 
-export function clearSchedule() {
-    localStorage.removeItem(constants.SCHEDULE_KEY);
+export async function clearSchedule() {
+    const s = await store;
+    await s.delete(constants.SCHEDULE_KEY);
 }

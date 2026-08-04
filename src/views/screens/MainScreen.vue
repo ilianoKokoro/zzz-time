@@ -19,7 +19,7 @@ async function scheduleShutdown() {
     await invoke("schedule_shutdown", { seconds });
 
     const timestamp = Date.now() + seconds * 1000;
-    saveSchedule(time.value.hour, time.value.minute, timestamp);
+    await saveSchedule(time.value.hour, time.value.minute, timestamp);
     scheduleTime.value = new Time(
         time.value.hour,
         time.value.minute,
@@ -29,17 +29,21 @@ async function scheduleShutdown() {
 
 async function cancelShutdown() {
     await invoke("cancel_shutdown");
-    clearSchedule();
+    await clearSchedule();
     scheduleTime.value = undefined;
 }
 
-const stored = loadSchedule();
-if (stored && stored.timestamp > Date.now()) {
-    time.value = new Time(stored.hour, stored.minute);
-    scheduleTime.value = new Time(stored.hour, stored.minute, stored.timestamp);
-} else if (stored) {
-    clearSchedule();
+async function restoreSchedule() {
+    const stored = await loadSchedule();
+    if (stored && stored.timestamp > Date.now()) {
+        time.value = new Time(stored.hour, stored.minute);
+        scheduleTime.value = new Time(stored.hour, stored.minute, stored.timestamp);
+    } else if (stored) {
+        await clearSchedule();
+    }
 }
+
+restoreSchedule();
 </script>
 
 <template>
